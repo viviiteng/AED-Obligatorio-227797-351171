@@ -1,6 +1,6 @@
 package tads;
 
-public interface ILista<T extends Comparable<T>> {
+public interface IListaDoble<T> {
     
     public boolean esVacia();
     public void agregarInicio(T n);
@@ -12,8 +12,7 @@ public interface ILista<T extends Comparable<T>> {
     public void agregarOrd(T n);
     public void borrarElemento(T n);
     public int cantElementos();
-    public Nodo<T> obtenerElemento(T n);
-    public void mostrarREC(Nodo l);
-    public boolean existeElemento(T n);
-    public String listar();    
+    public NodoListaDoble obtenerElemento(T n);
+    public void mostrarREC(NodoListaDoble l);
+    
 }

@@ -1,11 +1,11 @@
 package tads;
 
-public class NodoLista<T extends Comparable> {
+public class Nodo<T extends Comparable> {
     
     private T dato;
-    private NodoLista<T> siguiente;
+    private Nodo<T> siguiente;
     
-    public NodoLista(T elDato){
+    public Nodo(T elDato){
         this.dato = elDato;
         this.siguiente = null;
     }
@@ -18,11 +18,11 @@ public class NodoLista<T extends Comparable> {
         this.dato = dato;
     }
 
-    public NodoLista<T> getSiguiente() {
+    public Nodo<T> getSiguiente() {
         return siguiente;
     }
 
-    public void setSiguiente(NodoLista<T> siguiente) {
+    public void setSiguiente(Nodo<T> siguiente) {
         this.siguiente = siguiente;
     }
         
