@@ -2,17 +2,30 @@ package dominio;
 
 import java.util.Objects;
 import tads.ListaNodos;
+import tads.Cola;
+
 
 public class Estacion implements Comparable<Estacion>{
     private String Nombre;
     private String Barrio;
     private int Capacidad;
     private ListaNodos<Bicicleta> Bicicletas;
+    private Cola<Usuario> Usuarios;
     
     public Estacion(String nombre, String barrio, int capacidad){
         this.Nombre = nombre;
         this.Barrio = barrio;
         this.Capacidad = capacidad;
+    }
+    public Estacion(String nombre){
+        this.Nombre = nombre;
+    }
+    public Cola<Usuario> getUsuarios() {
+        return Usuarios;
+    }
+
+    public void setUsuarios(Cola<Usuario> Usuarios) {
+        this.Usuarios = Usuarios;
     }
 
     public String getBarrio() {

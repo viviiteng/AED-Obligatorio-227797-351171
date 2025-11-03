@@ -16,4 +16,6 @@ public interface ILista<T extends Comparable<T>> {
     public void mostrarREC(Nodo l);
     public boolean existeElemento(T n);
     public String listar();    
+    public String listarRecursivaDesc(Nodo n);
+    public String listarRecursivaAsc(Nodo n);
 }
