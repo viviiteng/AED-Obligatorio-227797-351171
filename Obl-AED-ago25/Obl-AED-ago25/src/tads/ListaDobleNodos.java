@@ -83,7 +83,6 @@ public class ListaDobleNodos<T extends Comparable> implements IListaDoble<T> {
     @Override
     public void mostrar() {
         NodoListaDoble aux = this.lista;
-        
         while(aux != null){
             System.out.println(aux.getDato());
             aux = aux.getSiguiente();

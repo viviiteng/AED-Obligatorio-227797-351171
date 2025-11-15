@@ -1,19 +1,23 @@
 package sistemaAutogestion;
 
-//AgustinFeijoo#35 y números de estudiante de los integrantes del equipo
+//AgustinFeijoo#351171 y Viviana Teng#227797
 
 import dominio.Estacion;
 import dominio.Usuario;
 import dominio.Bicicleta;
+import dominio.RegistroAlquiler;
 import tads.ListaNodos;
+import tads.Cola;
+import tads.PilaNodos;
+import tads.ListaDobleNodos;
+
 public class Sistema implements IObligatorio {
     
     private ListaNodos<Estacion> estaciones;
     private ListaNodos<Usuario> registroUsuarios;
     private ListaNodos<Bicicleta> deposito;
     private ListaNodos<Bicicleta> registroBicicletas;
-
-
+    private PilaNodos<RegistroAlquiler> registroAlquileres;
 
     @Override
     public Retorno crearSistemaDeGestion() {
@@ -21,6 +25,7 @@ public class Sistema implements IObligatorio {
         registroUsuarios = new ListaNodos();
         deposito = new ListaNodos();
         registroBicicletas = new ListaNodos(); 
+        registroAlquileres = new PilaNodos();
         return Retorno.ok();
     }
 
@@ -123,7 +128,8 @@ public class Sistema implements IObligatorio {
 
         if (!bici.getUbicacion().equals("DEPOSITO") && bici.getUbicacion() != null) {
             Estacion est = estaciones.obtenerElemento(new Estacion(bici.getUbicacion(), null, 0)).getDato();
-            deposito.agregarOrd(bici);
+            deposito.agregarFinal(bici);
+            //cambie agregar ordenado a agregar final para el Req 3.3
             est.getBicicletas().borrarElemento(bici);
         }
         bici.setEnMantenimiento(true);
@@ -155,27 +161,136 @@ public class Sistema implements IObligatorio {
 
     @Override
     public Retorno eliminarEstacion(String nombre) {
-        return Retorno.noImplementada();
+        
+        if (nombre == null || nombre.trim().isEmpty()){
+            return Retorno.error1();
+        }
+        
+        Estacion nuevo = new Estacion(nombre);
+        boolean existe = estaciones.existeElemento(nuevo);
+        if (!existe) {
+            return Retorno.error2();
+        }
+        
+        Estacion estacion = estaciones.obtenerElemento(nuevo).getDato();
+        if(estacion.getBicicletas().cantElementos()>0 && estacion.getUsuarios().cantidadnodos()>0)
+            return Retorno.error3();
+        
+        estaciones.borrarElemento(estacion);
+        return Retorno.ok();
     }
 
     @Override
     public Retorno asignarBicicletaAEstacion(String codigo, String nombreEstacion) {
-        return Retorno.noImplementada();
+        if (codigo == null || codigo.trim().isEmpty() ||
+            nombreEstacion == null || nombreEstacion.trim().isEmpty())
+        {
+            return Retorno.error1();
+        }
+        Bicicleta b = new Bicicleta(codigo,null);
+        if(!registroBicicletas.existeElemento(b))
+        {
+            return Retorno.error2();
+        }
+        Bicicleta bici = registroBicicletas.obtenerElemento(b).getDato();
+        if(bici.isEnAlquiler() || bici.isEnMantenimiento()){
+            return Retorno.error2();
+        }
+        Estacion e = new Estacion(nombreEstacion,null,0);
+        if(!estaciones.existeElemento(e)){
+            return Retorno.error3();
+        }
+        Estacion est = estaciones.obtenerElemento(e).getDato();
+        if(est.getBicicletas().cantElementos() == est.getCapacidad()){
+            return Retorno.error4();
+        }
+        if(deposito.existeElemento(bici)){
+            est.getBicicletas().agregarFinal(bici);
+            deposito.borrarElemento(bici);
+            return Retorno.ok();
+        }else{
+            Estacion e1 = new Estacion(bici.getUbicacion(),null,0);
+            est.getBicicletas().agregarFinal(bici);
+            estaciones.obtenerElemento(e1).getDato().getBicicletas().borrarElemento(bici);
+            return Retorno.ok();
+        }
     }
 
     @Override
     public Retorno alquilarBicicleta(String cedula, String nombreEstacion) {
-        return Retorno.noImplementada();
+        if (cedula == null || cedula.trim().isEmpty() ||
+            nombreEstacion == null || nombreEstacion.trim().isEmpty())
+        {
+            return Retorno.error1();
+        }
+        Usuario u = new Usuario(cedula,null);
+        if(!registroUsuarios.existeElemento(u)){
+            return Retorno.error2();
+        }
+
+        Estacion e = new Estacion(nombreEstacion,null,0);
+        if(!estaciones.existeElemento(e)){
+            return Retorno.error3();
+        }
+        Estacion est = estaciones.obtenerElemento(e).getDato();
+        if(est.getBicicletas().cantElementos()>0){
+            Bicicleta biciUno = est.getBicicletas().obtenerElementoPorPosicion(0).getDato();
+            biciUno.setEnAlquiler(true);
+            est.getBicicletas().borrarElemento(biciUno);
+        }
+        //FALTA AGREGAR EL REGISTRO DE ALQUILER
+        return Retorno.ok();
     }
 
     @Override
     public Retorno devolverBicicleta(String cedula, String nombreEstacionDestino) {
-        return Retorno.noImplementada();
+        if (cedula == null || cedula.trim().isEmpty()){
+            return Retorno.error1();
+        }
+        if (nombreEstacionDestino == null || nombreEstacionDestino.trim().isEmpty()){
+            return Retorno.error1();
+        }
+        Usuario unUsuario = new Usuario(cedula);
+        boolean existe = registroUsuarios.existeElemento(unUsuario);
+        Estacion nuevo = new Estacion(nombreEstacionDestino);
+        Estacion unaEstacion = estaciones.obtenerElemento(nuevo).getDato();
+        
+        if(!existe && unUsuario.getUnaBici()==null){
+            return Retorno.error2();
+        }
+        
+        if(!estaciones.existeElemento(unaEstacion)){
+          return Retorno.error3();
+        }
+        
+        if(unaEstacion.getCapacidad() == unaEstacion.getBicicletas().cantElementos()){
+            unaEstacion.getColaUsuariosDevolucion().encolar(unUsuario);           
+        }else{
+            unUsuario.getUnaBici().setEnAlquiler(false);
+            asignarBicicletaAEstacion(unUsuario.getUnaBici().getCodigo(), nombreEstacionDestino);
+            if(unaEstacion.getColaUsuariosEspera().cantidadnodos()>0){
+                alquilarBicicleta(unaEstacion.getColaUsuariosEspera().frente(), nombreEstacionDestino);
+                nombreEstacionDestino.;
+            }
+        }
+        return Retorno.ok();
     }
 
     @Override
     public Retorno deshacerUltimosRetiros(int n) {
-        return Retorno.noImplementada();
+        String mensaje = new String();
+        if(n<=0){
+            return Retorno.error1();
+        }
+        for (int i = 0; i < n; i++) {
+            RegistroAlquiler unRegistro = registroAlquileres.poptop();
+            String cedula = unRegistro.getUnUsuario().getCedula();
+            String nombreEstacionDestino = unRegistro.getEstacionOrigen().getNombre();
+            devolverBicicleta(cedula, nombreEstacionDestino);
+            mensaje += (unRegistro.toString() + '|');
+        }
+        mensaje = mensaje.substring(0, mensaje.length() - 1);
+        return Retorno.ok(mensaje);
     }
 
     @Override
@@ -220,7 +335,9 @@ public class Sistema implements IObligatorio {
 
     @Override
     public Retorno listarBicisEnDeposito() {
-        return Retorno.ok(deposito.listar());
+        return Retorno.ok(deposito.listarRecursivaDesc(deposito.getLista()));
+        //esta mal usar getLista()? si
+        //
     }
 
     @Override
@@ -277,7 +394,14 @@ public class Sistema implements IObligatorio {
     
     @Override
     public Retorno listarBicicletasDeEstacion(String nombreEstacion) {
-        return Retorno.noImplementada();
+        Estacion nueva = new Estacion (nombreEstacion);
+        Estacion unaEstacion = estaciones.obtenerElemento(nueva).getDato();
+        if(unaEstacion.getBicicletas()!=null){
+            unaEstacion.getBicicletas().listarRecursivaAsc(unaEstacion.getBicicletas().getLista());
+            return Retorno.ok();
+        }
+        return Retorno.error1();
+        //podemos hacer esto por mas que la letra no lo plantee? si
     }
 
     @Override

@@ -179,5 +179,41 @@ public class ListaNodos<T extends Comparable<T>> implements ILista<T> {
        }
        return list;
     }
-       
+    
+    @Override
+    public String listarRecursivaDesc(Nodo n){
+        if (n == null) {
+            return "";
+        }
+        String mensaje = listarRecursivaDesc(n.getSiguiente());
+        if(!mensaje.isEmpty()){            
+            mensaje += "|";            
+        }
+        mensaje += n.getDato().toString();
+        return mensaje;
+    }
+    @Override
+    public String listarRecursivaAsc(Nodo n){
+        if (n == null) {
+            return "";
+        }
+        String mensaje = n.getDato().toString(); 
+        if(n.getDato()!=null){       
+            mensaje += "|" + listarRecursivaDesc(n.getSiguiente());            
+        }
+        return mensaje;
+    }
+    @Override
+    public Nodo<T> obtenerElementoPorPosicion(int pos) {
+        Nodo<T> ret = this.lista;
+        int contador = 0;
+
+        while(ret != null){
+            if(contador == pos) return ret;
+            ret = ret.getSiguiente();
+            contador++;
+        }
+
+        return ret;
+    }
 }
