@@ -182,12 +182,64 @@ public class Sistema implements IObligatorio {
 
     @Override
     public Retorno asignarBicicletaAEstacion(String codigo, String nombreEstacion) {
-        return Retorno.noImplementada();
+        if (codigo == null || codigo.trim().isEmpty() ||
+            nombreEstacion == null || nombreEstacion.trim().isEmpty())
+        {
+            return Retorno.error1();
+        }
+        Bicicleta b = new Bicicleta(codigo,null);
+        if(!registroBicicletas.existeElemento(b))
+        {
+            return Retorno.error2();
+        }
+        Bicicleta bici = registroBicicletas.obtenerElemento(b).getDato();
+        if(bici.isEnAlquiler() || bici.isEnMantenimiento()){
+            return Retorno.error2();
+        }
+        Estacion e = new Estacion(nombreEstacion,null,0);
+        if(!estaciones.existeElemento(e)){
+            return Retorno.error3();
+        }
+        Estacion est = estaciones.obtenerElemento(e).getDato();
+        if(est.getBicicletas().cantElementos() == est.getCapacidad()){
+            return Retorno.error4();
+        }
+        if(deposito.existeElemento(bici)){
+            est.getBicicletas().agregarFinal(bici);
+            deposito.borrarElemento(bici);
+            return Retorno.ok();
+        }else{
+            Estacion e1 = new Estacion(bici.getUbicacion(),null,0);
+            est.getBicicletas().agregarFinal(bici);
+            estaciones.obtenerElemento(e1).getDato().getBicicletas().borrarElemento(bici);
+            return Retorno.ok();
+        }
     }
 
     @Override
     public Retorno alquilarBicicleta(String cedula, String nombreEstacion) {
-        return Retorno.noImplementada();
+        if (cedula == null || cedula.trim().isEmpty() ||
+            nombreEstacion == null || nombreEstacion.trim().isEmpty())
+        {
+            return Retorno.error1();
+        }
+        Usuario u = new Usuario(cedula,null);
+        if(!registroUsuarios.existeElemento(u)){
+            return Retorno.error2();
+        }
+
+        Estacion e = new Estacion(nombreEstacion,null,0);
+        if(!estaciones.existeElemento(e)){
+            return Retorno.error3();
+        }
+        Estacion est = estaciones.obtenerElemento(e).getDato();
+        if(est.getBicicletas().cantElementos()>0){
+            Bicicleta biciUno = est.getBicicletas().obtenerElementoPorPosicion(0).getDato();
+            biciUno.setEnAlquiler(true);
+            est.getBicicletas().borrarElemento(biciUno);
+        }
+        //FALTA AGREGAR EL REGISTRO DE ALQUILER
+        return Retorno.ok();
     }
 
     @Override
@@ -207,20 +259,18 @@ public class Sistema implements IObligatorio {
             return Retorno.error2();
         }
         
-        if(unaEstacion==null){
-//        destion inexistente
+        if(!estaciones.existeElemento(unaEstacion)){
           return Retorno.error3();
         }
         
-        if(unaEstacion.getCapacidad()>5){
-            //anclje? eran 5?
-            unaEstacion.getUsuarios().encolar(unUsuario);
-            //hay limite de encolacion?
+        if(unaEstacion.getCapacidad() == unaEstacion.getBicicletas().cantElementos()){
+            unaEstacion.getColaUsuariosDevolucion().encolar(unUsuario);           
         }else{
+            unUsuario.getUnaBici().setEnAlquiler(false);
             asignarBicicletaAEstacion(unUsuario.getUnaBici().getCodigo(), nombreEstacionDestino);
-            //se asume que en esa funcion ya se debe marcar bici en disponible
-            if(unaEstacion.getUsuarios().cantidadnodos()>0){
-                alquilarBicicleta(unUsuario.getUnaBici().getCodigo(), nombreEstacionDestino);
+            if(unaEstacion.getColaUsuariosEspera().cantidadnodos()>0){
+                alquilarBicicleta(unaEstacion.getColaUsuariosEspera().frente(), nombreEstacionDestino);
+                nombreEstacionDestino.;
             }
         }
         return Retorno.ok();
@@ -286,7 +336,8 @@ public class Sistema implements IObligatorio {
     @Override
     public Retorno listarBicisEnDeposito() {
         return Retorno.ok(deposito.listarRecursivaDesc(deposito.getLista()));
-        //esta mal usar getLista()?
+        //esta mal usar getLista()? si
+        //
     }
 
     @Override
@@ -350,7 +401,7 @@ public class Sistema implements IObligatorio {
             return Retorno.ok();
         }
         return Retorno.error1();
-        //podemos hacer esto por mas que la letra no lo plantee?
+        //podemos hacer esto por mas que la letra no lo plantee? si
     }
 
     @Override
