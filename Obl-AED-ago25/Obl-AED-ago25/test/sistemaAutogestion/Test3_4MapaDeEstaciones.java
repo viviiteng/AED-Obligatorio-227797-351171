@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class Test3_04MapaDeEstaciones {
+public class Test3_4MapaDeEstaciones {
     private Retorno retorno;
     private final IObligatorio s = new Sistema();
 

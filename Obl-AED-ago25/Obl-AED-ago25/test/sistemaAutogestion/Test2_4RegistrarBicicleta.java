@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class Test2_04RegistrarBicicleta {
+public class Test2_4RegistrarBicicleta {
 
     private Retorno retorno;
     private final IObligatorio s = new Sistema();

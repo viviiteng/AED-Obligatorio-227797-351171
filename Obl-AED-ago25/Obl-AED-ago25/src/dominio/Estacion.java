@@ -10,10 +10,22 @@ public class Estacion implements Comparable<Estacion>{
     private String Barrio;
     private int Capacidad;
     private ListaNodos<Bicicleta> Bicicletas;
-    //hacer dos colas, una de espera para dar y otra para devolver bici
     private Cola<Usuario> colaUsuariosEspera;    
     private Cola<Usuario> colaUsuariosDevolucion;
 
+    public Estacion(String nombre, String barrio, int capacidad){
+        this.Nombre = nombre;
+        this.Barrio = barrio;
+        this.Capacidad = capacidad;
+        this.Bicicletas = new ListaNodos();
+        this.colaUsuariosEspera = new Cola(100);
+        this.colaUsuariosDevolucion = new Cola(100);
+    }
+    
+    public Estacion(String nombre){
+        this.Nombre = nombre;
+    }
+    
     public Cola<Usuario> getColaUsuariosEspera() {
         return colaUsuariosEspera;
     }
@@ -31,14 +43,7 @@ public class Estacion implements Comparable<Estacion>{
     }
 
     
-    public Estacion(String nombre, String barrio, int capacidad){
-        this.Nombre = nombre;
-        this.Barrio = barrio;
-        this.Capacidad = capacidad;
-    }
-    public Estacion(String nombre){
-        this.Nombre = nombre;
-    }
+    
     
     public String getBarrio() {
         return Barrio;

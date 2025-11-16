@@ -6,7 +6,8 @@ public interface ICola <T extends Comparable<T>>{
    boolean esLLena();
    void encolar(T dato);
    void desencolar();
-   Nodo frente();
-   Nodo fondo();
-   int cantidadnodos();
+   Nodo<T> getFrente();
+   Nodo<T> getFondo();
+   int getCantNodos();
+   ListaNodos<T> obtenerLista();
 }

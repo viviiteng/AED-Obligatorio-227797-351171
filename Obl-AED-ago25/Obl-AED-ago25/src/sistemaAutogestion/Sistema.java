@@ -5,11 +5,14 @@ package sistemaAutogestion;
 import dominio.Estacion;
 import dominio.Usuario;
 import dominio.Bicicleta;
+import dominio.RankingTipo;
 import dominio.RegistroAlquiler;
 import tads.ListaNodos;
 import tads.Cola;
 import tads.PilaNodos;
 import tads.ListaDobleNodos;
+import java.time.LocalDate;
+
 
 public class Sistema implements IObligatorio {
     
@@ -173,7 +176,7 @@ public class Sistema implements IObligatorio {
         }
         
         Estacion estacion = estaciones.obtenerElemento(nuevo).getDato();
-        if(estacion.getBicicletas().cantElementos()>0 && estacion.getUsuarios().cantidadnodos()>0)
+        if(estacion.getBicicletas().cantElementos()>0 && estacion.getColaUsuariosEspera().getCantNodos()>0)
             return Retorno.error3();
         
         estaciones.borrarElemento(estacion);
@@ -227,7 +230,7 @@ public class Sistema implements IObligatorio {
         if(!registroUsuarios.existeElemento(u)){
             return Retorno.error2();
         }
-
+        u = registroUsuarios.obtenerElemento(u).getDato();
         Estacion e = new Estacion(nombreEstacion,null,0);
         if(!estaciones.existeElemento(e)){
             return Retorno.error3();
@@ -237,43 +240,66 @@ public class Sistema implements IObligatorio {
             Bicicleta biciUno = est.getBicicletas().obtenerElementoPorPosicion(0).getDato();
             biciUno.setEnAlquiler(true);
             est.getBicicletas().borrarElemento(biciUno);
+            RegistroAlquiler registro = new RegistroAlquiler(biciUno,u,LocalDate.now(),est);
+            registroAlquileres.push(registro);
         }
-        //FALTA AGREGAR EL REGISTRO DE ALQUILER
         return Retorno.ok();
     }
 
     @Override
     public Retorno devolverBicicleta(String cedula, String nombreEstacionDestino) {
-        if (cedula == null || cedula.trim().isEmpty()){
+    if (cedula == null || cedula.trim().isEmpty()){
+
             return Retorno.error1();
+
         }
+
         if (nombreEstacionDestino == null || nombreEstacionDestino.trim().isEmpty()){
+
             return Retorno.error1();
+
         }
+
         Usuario unUsuario = new Usuario(cedula);
+
         boolean existe = registroUsuarios.existeElemento(unUsuario);
+
         Estacion nuevo = new Estacion(nombreEstacionDestino);
+
         Estacion unaEstacion = estaciones.obtenerElemento(nuevo).getDato();
-        
+
         if(!existe && unUsuario.getUnaBici()==null){
+
             return Retorno.error2();
+
         }
-        
+
         if(!estaciones.existeElemento(unaEstacion)){
+
           return Retorno.error3();
+
         }
-        
+
         if(unaEstacion.getCapacidad() == unaEstacion.getBicicletas().cantElementos()){
+
             unaEstacion.getColaUsuariosDevolucion().encolar(unUsuario);           
+
         }else{
+
             unUsuario.getUnaBici().setEnAlquiler(false);
+
             asignarBicicletaAEstacion(unUsuario.getUnaBici().getCodigo(), nombreEstacionDestino);
-            if(unaEstacion.getColaUsuariosEspera().cantidadnodos()>0){
-                alquilarBicicleta(unaEstacion.getColaUsuariosEspera().frente(), nombreEstacionDestino);
-                nombreEstacionDestino.;
+
+            if(unaEstacion.getColaUsuariosEspera().getCantNodos()>0){
+
+                alquilarBicicleta(unaEstacion.getColaUsuariosEspera().getFrente().getDato().getCedula(), nombreEstacionDestino);
+
             }
+
         }
+
         return Retorno.ok();
+ 
     }
 
     @Override
@@ -309,25 +335,6 @@ public class Sistema implements IObligatorio {
         return Retorno.ok(registroUsuarios.obtenerElemento(u).getDato().toString());
     }
     
-  
-    public Bicicleta obtenerBiciEnDeposito(String codigo) {
-        
-        Bicicleta b = new Bicicleta (codigo);
-        if(!deposito.existeElemento(b)){
-            return null;
-        }
-        return deposito.obtenerElemento(b).getDato();
-    }
-    
-    public Bicicleta obtenerBiciEnBicicletas(String codigo) {
-        
-        Bicicleta b = new Bicicleta (codigo);
-        if(!registroBicicletas.existeElemento(b)){
-            return null;
-        }
-        return deposito.obtenerElemento(b).getDato();
-    }
-
     @Override
     public Retorno listarUsuarios() {
         return Retorno.ok(registroUsuarios.listar());
@@ -406,27 +413,150 @@ public class Sistema implements IObligatorio {
 
     @Override
     public Retorno estacionesConDisponibilidad(int n) {
-        return Retorno.noImplementada();
+        if(n<=1)return Retorno.error1();
+        int cantEst = 0;
+        for (int i = 0; i < estaciones.cantElementos(); i++) {
+            Estacion e = estaciones.obtenerElementoPorPosicion(i).getDato();
+            int espaciosDisp = e.getCapacidad() - e.getBicicletas().cantElementos();
+            if(espaciosDisp > n){
+                cantEst++;
+            }
+        }
+        return Retorno.ok(cantEst);
     }
 
     @Override
     public Retorno ocupacionPromedioXBarrio() {
-        return Retorno.noImplementada();
+        
+        int largo = estaciones.cantElementos();
+        ListaNodos<String> Barrios = new ListaNodos();
+        ListaNodos<Integer> CantXBarrio = new ListaNodos();
+        ListaNodos<Integer> PorcentajeOcupXBarrio = new ListaNodos();
+        String retorno = "";
+        
+        for (int i = 0; i < largo; i++) {
+            Estacion e = estaciones.obtenerElementoPorPosicion(i).getDato();
+            boolean barrioYaRegistrado = false;
+            int posBarrio = -1;
+            for (int j = 0; j < Barrios.cantElementos(); j++) {
+                if(e.getBarrio().equals(Barrios.obtenerElementoPorPosicion(j).getDato())){
+                    barrioYaRegistrado = true;
+                    posBarrio = j;
+                    break;
+                }
+            }
+            int porcentajeOcupacion = e.getBicicletas().cantElementos() * 100 / e.getCapacidad();
+            if(!barrioYaRegistrado){
+                Barrios.agregarFinal(e.getBarrio());
+                CantXBarrio.agregarFinal(1);
+                PorcentajeOcupXBarrio.agregarFinal(porcentajeOcupacion);
+            }else{
+                int cantXBarrio = CantXBarrio.obtenerElementoPorPosicion(posBarrio).getDato();
+                cantXBarrio++;
+                CantXBarrio.sustituirElementoPorPosicion(posBarrio, cantXBarrio);
+
+                int porcentajeAnt = PorcentajeOcupXBarrio.obtenerElementoPorPosicion(posBarrio).getDato();
+                int nuevoPromedio = (porcentajeAnt * (cantXBarrio - 1) + porcentajeOcupacion) / cantXBarrio;
+
+                PorcentajeOcupXBarrio.sustituirElementoPorPosicion(posBarrio, nuevoPromedio);
+            }
+        }
+        
+        for (int i = 0; i < Barrios.cantElementos(); i++) {
+            String barrio = Barrios.obtenerElementoPorPosicion(i).getDato();
+            int porcentajeOcupXBarrio = PorcentajeOcupXBarrio.obtenerElementoPorPosicion(i).getDato();
+            retorno+= barrio + "#" + porcentajeOcupXBarrio + "|";
+        }
+        retorno = retorno.substring(0, retorno.length() - 1);
+        return Retorno.ok(retorno);
     }
 
     @Override
     public Retorno rankingTiposPorUso() {
-        return Retorno.noImplementada();
+       int cantBicisUrbanas = obtenerCantBicisPorAlquilerSegunTipo("URBANA");
+       int cantBicisMountain = obtenerCantBicisPorAlquilerSegunTipo("MOUNTAIN");
+       int cantBicisElectrica = obtenerCantBicisPorAlquilerSegunTipo("ELECTRICA");
+       RankingTipo urbana = new RankingTipo(cantBicisUrbanas,"URBANA");
+       RankingTipo mountain = new RankingTipo(cantBicisMountain,"MOUNTAIN");
+       RankingTipo electrica = new RankingTipo(cantBicisElectrica,"ELECTRICA");
+       ListaNodos<RankingTipo> rankingTipos = new ListaNodos();
+       rankingTipos.agregarOrd(urbana);
+       rankingTipos.agregarOrd(mountain);
+       rankingTipos.agregarOrd(electrica); 
+       return Retorno.ok(rankingTipos.listar());
     }
+    
 
     @Override
     public Retorno usuariosEnEspera(String nombreEstacion) {
-        return Retorno.noImplementada();
+        String retorno = "";
+        Estacion e = estaciones.obtenerElemento(new Estacion(nombreEstacion)).getDato();
+        for (int i = 0; i < e.getColaUsuariosEspera().getCantNodos(); i++) {
+            Usuario u = e.getColaUsuariosEspera().obtenerLista().obtenerElementoPorPosicion(i).getDato();
+            retorno += u.getNombre() + "|";
+        }
+        retorno = retorno.substring(0, retorno.length() - 1);
+        return Retorno.ok(retorno);
     }
 
     @Override
     public Retorno usuarioMayor() {
-        return Retorno.noImplementada();
+         ListaNodos<RegistroAlquiler> RegistrosdePila = registroAlquileres.ConvertirPilaLista(registroAlquileres);
+        int contadorBicis = 0;
+        int cedulaMostrar=0;
+        int max = 0;
+        for (int i = 0; i < registroUsuarios.cantElementos(); i++) {            
+            String cedula = registroUsuarios.obtenerElementoPorPosicion(i).getDato().getCedula();
+                for (int j = 0; j < RegistrosdePila.cantElementos(); j++) {
+                    Usuario unUsuario = RegistrosdePila.obtenerElementoPorPosicion(j).getDato().getUnUsuario();                    
+                    if(unUsuario.getCedula().equals(cedula) && unUsuario.getUnaBici().isEnAlquiler()){
+                        contadorBicis++;
+                    }                    
+                }
+                if(contadorBicis>max){
+                    max = contadorBicis;
+                    cedulaMostrar=Integer.parseInt(cedula);
+                }else if(contadorBicis==max){
+                    int newCedula = Integer.parseInt(cedula);
+                    if(cedulaMostrar > newCedula){
+                        cedulaMostrar = newCedula;
+                    }                    
+                }
+        }
+        return Retorno.ok(cedulaMostrar);
+    }
+    
+    public Bicicleta obtenerBiciEnDeposito(String codigo) {
+        
+        Bicicleta b = new Bicicleta (codigo);
+        if(!deposito.existeElemento(b)){
+            return null;
+        }
+        return deposito.obtenerElemento(b).getDato();
+    }
+    
+    public Bicicleta obtenerBiciEnBicicletas(String codigo) {
+        
+        Bicicleta b = new Bicicleta (codigo);
+        if(!registroBicicletas.existeElemento(b)){
+            return null;
+        }
+        return deposito.obtenerElemento(b).getDato();
+    }
+    
+    public ListaNodos<Estacion> obtenerEstacionesTest() {
+        return estaciones;
+    }
+    
+    public int obtenerCantBicisPorAlquilerSegunTipo(String tipo) {        
+        int contador = 0;
+        for (int i = 0; i < registroBicicletas.cantElementos(); i++) {
+            Bicicleta unaBici = registroBicicletas.obtenerElementoPorPosicion(i).getDato();
+            if(unaBici.getTipo() == tipo && unaBici.isEnAlquiler()){
+                contador++;
+            }           
+        }
+        return contador;
     }
 
 }

@@ -1,6 +1,6 @@
 package tads;
 
-public interface IPila<T> {
+public interface IPila<T extends Comparable<T>> {
     
     public boolean esVacia();
     public void push(T n);
@@ -9,8 +9,7 @@ public interface IPila<T> {
     public T poptop();
     public void vaciar();
     public int cantElementos();
-    
-    // Con fines didácticos
+    public ListaNodos<T> ConvertirPilaLista(PilaNodos<T> p);
     public void mostrar();
     
 }

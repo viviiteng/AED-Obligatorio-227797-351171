@@ -1,6 +1,6 @@
 package tads;
 
-public class PilaNodos<T extends Comparable> implements IPila<T> {
+public class PilaNodos<T extends Comparable<T>> implements IPila<T> {
     
     private Nodo<T> pila;
     private int cantidad;
@@ -68,5 +68,22 @@ public class PilaNodos<T extends Comparable> implements IPila<T> {
             System.out.println(aux.getDato());
             aux = aux.getSiguiente();
         }
+    }
+    
+    @Override
+    public ListaNodos<T> ConvertirPilaLista(PilaNodos<T> p) {
+        ListaNodos<T> lista = new ListaNodos();
+        if(!p.esVacia()){
+            Nodo<T> aux = this.pila;
+            while(aux!=null){
+                lista.agregarInicio(aux.getDato());
+                this.pop();
+            }
+            for (int i = 0; i < lista.cantElementos(); i++) {
+                T n = lista.obtenerElementoPorPosicion(i).getDato();
+                this.push(n);
+            }
+        }
+        return lista;   
     }
 }

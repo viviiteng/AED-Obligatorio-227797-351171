@@ -10,15 +10,16 @@ public class Bicicleta implements Comparable<Bicicleta>{
 
    public Bicicleta(String Codigo, String Tipo) {
         this.Codigo = Codigo;
-        this.setTipo(Tipo);
+        this.Tipo = Tipo;
         this.enAlquiler = false;
         this.enMantenimiento = false;
         this.MotivoMantenimiento = null;
     }
    
-   public Bicicleta(String Codigo) {
+    public Bicicleta(String Codigo) {
         this.Codigo = Codigo;
     }
+   
    
 
     public boolean isEnAlquiler() {

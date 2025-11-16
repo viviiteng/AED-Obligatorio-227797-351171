@@ -11,6 +11,7 @@ public interface ILista<T extends Comparable<T>> {
     public void mostrar();
     public void agregarOrd(T n);
     public void borrarElemento(T n);
+    public void sustituirElementoPorPosicion(int pos, T n);
     public int cantElementos();
     public Nodo<T> obtenerElemento(T n);
     public void mostrarREC(Nodo l);
@@ -19,4 +20,5 @@ public interface ILista<T extends Comparable<T>> {
     public String listarRecursivaDesc(Nodo n);
     public String listarRecursivaAsc(Nodo n);
     public Nodo<T> obtenerElementoPorPosicion(int pos);
+    
 }

@@ -2,57 +2,60 @@
 package tads;
 
 public class Cola<T extends Comparable<T>> implements ICola<T> {
-    Nodo frente;
-    Nodo fondo;
-    int cantnodospermitidos;
-    int cantnodos;
+    private Nodo<T> frente;
+    private Nodo<T> fondo;
+    private int cantNodosPermitidos;
+    private int cantNodos;
 
     public Cola(int cantnodospermitidos) {
         this.frente = null;
         this.fondo = null;
-        this.cantnodospermitidos = cantnodospermitidos;
-        this.cantnodos = 0;
+        this.cantNodosPermitidos = cantnodospermitidos;
+        this.cantNodos = 0;
     }
-
-    public Nodo getFrente() {
+    
+    @Override
+    public Nodo<T> getFrente() {
         return frente;
     }
 
     public void setFrente(Nodo frente) {
         this.frente = frente;
     }
-
-    public Nodo getFondo() {
+    
+    @Override
+    public Nodo<T> getFondo() {
         return fondo;
     }
 
-    public void setFondo(Nodo fondo) {
+    public void setFondo(Nodo<T> fondo) {
         this.fondo = fondo;
     }
 
-    public int getCantnodospermitidos() {
-        return cantnodospermitidos;
+    public int getCantNodosPermitidos() {
+        return cantNodosPermitidos;
     }
 
-    public void setCantnodospermitidos(int cantnodospermitidos) {
-        this.cantnodospermitidos = cantnodospermitidos;
+    public void setCantNodosPermitidos(int cantNodosPermitidos) {
+        this.cantNodosPermitidos = cantNodosPermitidos;
+    }
+    
+    @Override
+    public int getCantNodos() {
+        return cantNodos;
     }
 
-    public int getCantnodos() {
-        return cantnodos;
-    }
-
-    public void setCantnodos(int cantnodos) {
-        this.cantnodos = cantnodos;
+    public void setCantNodos(int cantNodos) {
+        this.cantNodos = cantNodos;
     }
 
     @Override
     public boolean esVacia() {
-        return this.getCantnodos()==0;
+        return this.getCantNodos()==0;
     }
     @Override
     public boolean esLLena() {
-        return this.getCantnodos()==this.getCantnodospermitidos();
+        return this.getCantNodos()==this.getCantNodosPermitidos();
     }
     
     
@@ -67,7 +70,7 @@ public class Cola<T extends Comparable<T>> implements ICola<T> {
                     this.fondo.setSiguiente(nuevo);
                     this.setFondo(nuevo);                
                 }
-                this.cantnodos++;
+                this.cantNodos++;
             }else{
                 System.out.println("La cola esta llena, no puede agregar elemento");
             
@@ -77,7 +80,7 @@ public class Cola<T extends Comparable<T>> implements ICola<T> {
     @Override
     public void desencolar() {
         if (!this.esVacia()){
-            if (this.cantnodos==1){
+            if (this.cantNodos==1){
                 this.frente=null;
                 this.fondo=null;
 
@@ -85,28 +88,26 @@ public class Cola<T extends Comparable<T>> implements ICola<T> {
                 frente=frente.getSiguiente();
                 
             }
-            this.cantnodos--;           
-            
-        }else{
-         System.out.println("La cola esta vacia, no hay elementos para borrar");
-        
+            this.cantNodos--;           
         }
 
     }
-
+    
     @Override
-    public Nodo frente() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public ListaNodos<T> obtenerLista(){
+        ListaNodos<T> ret = new ListaNodos();
+        while(this.getCantNodos()>0){
+            ret.agregarFinal(this.getFrente().getDato());
+            this.desencolar();
+        }
+        for (int i = 0; i < ret.cantElementos(); i++) {
+            T dato = ret.obtenerElementoPorPosicion(i).getDato();
+            this.encolar(dato);
+        }
+        return ret;
     }
 
-    @Override
-    public Nodo fondo() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 
-    @Override
-    public int cantidadnodos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+ 
     
 }

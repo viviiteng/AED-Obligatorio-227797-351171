@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import dominio.Bicicleta;
 import static org.junit.Assert.*;
-public class Test2_05MarcarEnMantenimiento {
+public class Test2_5MarcarEnMantenimiento {
     private Retorno retorno;
     private final IObligatorio s = new Sistema();
 

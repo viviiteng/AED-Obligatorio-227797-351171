@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class Test2_02RegistrarEstacion {
+public class Test2_2RegistrarEstacion {
 
     private Retorno retorno;
     private final IObligatorio s = new Sistema();
