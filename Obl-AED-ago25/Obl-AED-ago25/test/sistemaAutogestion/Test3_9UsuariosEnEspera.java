@@ -13,22 +13,22 @@ public class Test3_9UsuariosEnEspera {
     }
 
     @Test
-    public void Ok() {
+    public void UsuariosEnEsperaOk() {
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
     }
 
     @Test
-    public void Error01() {
+    public void UsuariosEnEsperaError01() {
         assertEquals(Retorno.Resultado.ERROR_1, retorno.getResultado());
     }
 
     @Test
-    public void Error02() {
+    public void UsuariosEnEsperaError02() {
         assertEquals(Retorno.Resultado.ERROR_2, retorno.getResultado());
     }
 
     @Test
-    public void Error03() {
+    public void UsuariosEnEsperaError03() {
         
         assertEquals(Retorno.Resultado.ERROR_3, retorno.getResultado());
     }

@@ -13,22 +13,22 @@ public class Test2_11DeshacerUltimosRetiros {
     }
 
     @Test
-    public void Ok() {
+    public void DeshacerUltimosRetirosOk() {
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
     }
 
     @Test
-    public void Error01() {
+    public void DeshacerUltimosRetirosError01() {
         assertEquals(Retorno.Resultado.ERROR_1, retorno.getResultado());
     }
 
     @Test
-    public void Error02() {
+    public void DeshacerUltimosRetirosError02() {
         assertEquals(Retorno.Resultado.ERROR_2, retorno.getResultado());
     }
 
     @Test
-    public void Error03() {
+    public void DeshacerUltimosRetirosError03() {
         
         assertEquals(Retorno.Resultado.ERROR_3, retorno.getResultado());
     }

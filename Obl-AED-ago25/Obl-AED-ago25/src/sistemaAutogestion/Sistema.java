@@ -171,12 +171,10 @@ public class Sistema implements IObligatorio {
         
         Estacion nuevo = new Estacion(nombre);
         boolean existe = estaciones.existeElemento(nuevo);
-        if (!existe) {
-            return Retorno.error2();
-        }
-        
+        if (!existe) return Retorno.error2();
+            
         Estacion estacion = estaciones.obtenerElemento(nuevo).getDato();
-        if(estacion.getBicicletas().cantElementos()>0 && estacion.getColaUsuariosEspera().getCantNodos()>0)
+        if(estacion.getBicicletas().cantElementos()>0 || estacion.getColaUsuariosEspera().getCantNodos()>0)
             return Retorno.error3();
         
         estaciones.borrarElemento(estacion);
@@ -242,64 +240,41 @@ public class Sistema implements IObligatorio {
             est.getBicicletas().borrarElemento(biciUno);
             RegistroAlquiler registro = new RegistroAlquiler(biciUno,u,LocalDate.now(),est);
             registroAlquileres.push(registro);
+        }else{
+            est.getColaUsuariosEspera().encolar(u);
         }
         return Retorno.ok();
     }
 
     @Override
     public Retorno devolverBicicleta(String cedula, String nombreEstacionDestino) {
-    if (cedula == null || cedula.trim().isEmpty()){
-
+        if (cedula == null || cedula.trim().isEmpty() ||
+            nombreEstacionDestino == null || nombreEstacionDestino.trim().isEmpty())
+        {
             return Retorno.error1();
-
         }
-
-        if (nombreEstacionDestino == null || nombreEstacionDestino.trim().isEmpty()){
-
-            return Retorno.error1();
-
-        }
-
+        
         Usuario unUsuario = new Usuario(cedula);
-
         boolean existe = registroUsuarios.existeElemento(unUsuario);
-
         Estacion nuevo = new Estacion(nombreEstacionDestino);
-
         Estacion unaEstacion = estaciones.obtenerElemento(nuevo).getDato();
-
+        
         if(!existe && unUsuario.getUnaBici()==null){
-
             return Retorno.error2();
-
         }
-
         if(!estaciones.existeElemento(unaEstacion)){
-
           return Retorno.error3();
-
         }
-
         if(unaEstacion.getCapacidad() == unaEstacion.getBicicletas().cantElementos()){
-
             unaEstacion.getColaUsuariosDevolucion().encolar(unUsuario);           
-
         }else{
-
             unUsuario.getUnaBici().setEnAlquiler(false);
-
             asignarBicicletaAEstacion(unUsuario.getUnaBici().getCodigo(), nombreEstacionDestino);
-
             if(unaEstacion.getColaUsuariosEspera().getCantNodos()>0){
-
                 alquilarBicicleta(unaEstacion.getColaUsuariosEspera().getFrente().getDato().getCedula(), nombreEstacionDestino);
-
             }
-
         }
-
         return Retorno.ok();
- 
     }
 
     @Override

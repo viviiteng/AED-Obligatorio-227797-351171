@@ -215,23 +215,9 @@ public class ListaNodos<T extends Comparable<T>> implements ILista<T> {
     
     @Override
     public void sustituirElementoPorPosicion(int pos, T n){
-        Nodo<T> aBorrar = obtenerElementoPorPosicion(pos); 
-        Nodo<T> nuevo = new Nodo(n);
-        if(this.lista != null && aBorrar != null){
-            if(this.lista.getDato().equals(aBorrar)){
-                this.lista.setSiguiente(nuevo);
-                borrarInicio();
-            }else{
-                Nodo aux = this.lista;
-                while(aux.getSiguiente() != null && !aux.getSiguiente().getDato().equals(aBorrar)){
-                    aux = aux.getSiguiente();
-                }
-                
-                
-                    nuevo.setSiguiente(aBorrar.getSiguiente());
-                    aux.setSiguiente(nuevo);
-                    aBorrar.setSiguiente(null);
-            }
+        Nodo<T> aBorrar = obtenerElementoPorPosicion(pos);
+        if (aBorrar != null) {
+        aBorrar.setDato(n);
         }
     }
 

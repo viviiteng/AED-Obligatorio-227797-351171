@@ -13,22 +13,22 @@ public class Test3_8RankingTiposPorUso {
     }
 
     @Test
-    public void Ok() {
+    public void RankingTiposPorUsoOk() {
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
     }
 
     @Test
-    public void Error01() {
+    public void RankingTiposPorUsoError01() {
         assertEquals(Retorno.Resultado.ERROR_1, retorno.getResultado());
     }
 
     @Test
-    public void Error02() {
+    public void RankingTiposPorUsoError02() {
         assertEquals(Retorno.Resultado.ERROR_2, retorno.getResultado());
     }
 
     @Test
-    public void Error03() {
+    public void RankingTiposPorUsoError03() {
         
         assertEquals(Retorno.Resultado.ERROR_3, retorno.getResultado());
     }

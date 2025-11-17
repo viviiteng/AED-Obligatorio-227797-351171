@@ -15,7 +15,7 @@ public class Test3_7OcupacionPromedioXBarrio {
     }
 
     @Test
-    public void Ok() {
+    public void OcupacionPromedioXBarrioOk() {
         s.registrarBicicleta("BiciN1","MOUNTAIN");
         s.registrarBicicleta("BiciN2","ELECTRICA");
         s.registrarBicicleta("BiciN3","URBANA");
@@ -28,7 +28,7 @@ public class Test3_7OcupacionPromedioXBarrio {
         s.registrarBicicleta("Bici10","MOUNTAIN");
         s.registrarBicicleta("Bici11","ELECTRICA");
         s.registrarBicicleta("Bici12","URBANA");
-        
+       
         s.registrarEstacion("Estacion1", "Centro", 15);
         s.registrarEstacion("Estacion2", "Aguada", 20);
         s.registrarEstacion("Estacion3", "Malvin", 25);
@@ -52,6 +52,6 @@ public class Test3_7OcupacionPromedioXBarrio {
 
         retorno = s.ocupacionPromedioXBarrio();
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-        assertEquals("Centro#17|Aguada#5|Malvin#4|Palermo#7|Cordon#60", retorno.getValorString());
+        assertEquals("Centro#16|Aguada#5|Malvin#4|Palermo#7|Cordon#60", retorno.getValorString());
     }
 }

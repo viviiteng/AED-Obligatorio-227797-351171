@@ -13,22 +13,22 @@ public class Test2_10DevolverBicicleta {
     }
 
     @Test
-    public void Ok() {
+    public void DevolverBicicletaOk() {
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
     }
 
     @Test
-    public void Error01() {
+    public void DevolverBicicletaError01() {
         assertEquals(Retorno.Resultado.ERROR_1, retorno.getResultado());
     }
 
     @Test
-    public void Error02() {
+    public void DevolverBicicletaError02() {
         assertEquals(Retorno.Resultado.ERROR_2, retorno.getResultado());
     }
 
     @Test
-    public void Error03() {
+    public void DevolverBicicletaError03() {
         
         assertEquals(Retorno.Resultado.ERROR_3, retorno.getResultado());
     }
