@@ -14,22 +14,27 @@ public class Test3_8RankingTiposPorUso {
 
     @Test
     public void RankingTiposPorUsoOk() {
-        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-    }
-
-    @Test
-    public void RankingTiposPorUsoError01() {
-        assertEquals(Retorno.Resultado.ERROR_1, retorno.getResultado());
-    }
-
-    @Test
-    public void RankingTiposPorUsoError02() {
-        assertEquals(Retorno.Resultado.ERROR_2, retorno.getResultado());
-    }
-
-    @Test
-    public void RankingTiposPorUsoError03() {
+        s.registrarBicicleta("ABC123", "URBANA");
+        s.registrarBicicleta("ABC124", "URBANA");
+        s.registrarBicicleta("ABC125", "MOUNTAIN");
         
-        assertEquals(Retorno.Resultado.ERROR_3, retorno.getResultado());
+        s.registrarUsuario("50228080", "Agustin");
+        s.registrarUsuario("24555555", "Viviana");
+        s.registrarUsuario("33344444", "Pepe");
+      
+        s.registrarEstacion("Estacion1", "Aguada", 5);
+        
+        s.asignarBicicletaAEstacion("ABC123", "Estacion1");
+        s.asignarBicicletaAEstacion("ABC124", "Estacion1");
+        s.asignarBicicletaAEstacion("ABC125", "Estacion1");
+        
+        s.alquilarBicicleta("50228080", "Estacion1");
+        s.alquilarBicicleta("24555555", "Estacion1");
+        s.alquilarBicicleta("33344444", "Estacion1");
+        
+        retorno = s.rankingTiposPorUso();
+        
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+        assertEquals("ELECTRICA#0|MOUNTAIN#1|URBANA#2", retorno.getValorString());
     }
 }

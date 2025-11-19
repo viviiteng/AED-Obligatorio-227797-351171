@@ -3,9 +3,42 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/vivii/OneDrive%20-%20Facultad%20de%20Ingenieria%20-%20Universidad%20ORT%20Uruguay/Escritorio/ort/SEMESTRE%203/S3_Obligatorios/AED/Obl-AED-ago25/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/src/sistemaAutogestion/Sistema.java</file>
-            <file>file:/C:/Users/vivii/OneDrive%20-%20Facultad%20de%20Ingenieria%20-%20Universidad%20ORT%20Uruguay/Escritorio/ort/SEMESTRE%203/S3_Obligatorios/AED/Obl-AED-ago25/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test3_10UsuarioMayor.java</file>
-            <file>file:/C:/Users/vivii/OneDrive%20-%20Facultad%20de%20Ingenieria%20-%20Universidad%20ORT%20Uruguay/Escritorio/ort/SEMESTRE%203/S3_Obligatorios/AED/Obl-AED-ago25/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test2_11DeshacerUltimosRetiros.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/src/tads/ListaNodos.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/src/tads/ILista.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/src/dominio/RegistroAlquiler.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/src/sistemaAutogestion/Sistema.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/src/tads/Cola.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/src/dominio/Estacion.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/src/dominio/Usuario.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/src/tads/ICola.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/src/sistemaAutogestion/IObligatorio.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test3_3ListarBicisEnDeposito.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test_Estudiantes_parcial.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test2_7EliminarEstacion.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test2_6RepararBicicleta.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test2_8AsignarBicicletaAEstacion.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test2_9AlquilarBicicleta.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test2_10DevolverBicicleta.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test2_11DeshacerUltimosRetiros.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test3_5ListarBicicletasDeEstacion.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test3_6EstacionesConDisponibilidad.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test3_7OcupacionPromedioXBarrio.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test3_8RankingTiposPorUso.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test3_9UsuariosEnEspera.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test3_10UsuarioMayor.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test2_1CrearSistemaDeGestion.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test2_2RegistrarEstacion.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test2_4RegistrarBicicleta.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test2_3RegistrarUsuario.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test3_2ListarUsuarios.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/src/tads/Nodo.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test2_5MarcarEnMantenimiento.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test3_1ObtenerUsuario.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/src/dominio/Bicicleta.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/src/tads/PilaNodos.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/src/tads/IPila.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/src/dominio/RankingTipo.java</file>
+            <file>file:/C:/ORT/Semestre%203/Algoritmos/AED-Obligatorio-227797-351171/Obl-AED-ago25/Obl-AED-ago25/test/sistemaAutogestion/Test3_4MapaDeEstaciones.java</file>
         </group>
     </open-files>
 </project-private>

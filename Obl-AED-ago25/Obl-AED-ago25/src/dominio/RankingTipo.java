@@ -28,7 +28,7 @@ public class RankingTipo implements Comparable<RankingTipo>{
  
     @Override
     public String toString() {
-        return cantidadBici + NombreTipo;
+        return NombreTipo +"#"+cantidadBici ;
     }
     @Override
     public int compareTo(RankingTipo otro){        
