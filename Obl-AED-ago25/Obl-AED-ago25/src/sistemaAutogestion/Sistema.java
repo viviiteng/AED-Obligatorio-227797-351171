@@ -206,7 +206,7 @@ public class Sistema implements IObligatorio {
             return Retorno.error4();
         }
         if(deposito.existeElemento(bici)){
-            est.getBicicletas().agregarFinal(bici);
+            est.getBicicletas().agregarOrd(bici);
             deposito.borrarElemento(bici);
             bici.setUbicacion(est.getNombre());
             return Retorno.ok();
@@ -330,9 +330,10 @@ public class Sistema implements IObligatorio {
 
     @Override
     public Retorno listarBicisEnDeposito() {
-        return Retorno.ok(deposito.listarRecursivaDesc(deposito.getLista()));
-        //esta mal usar getLista()? si
-        //
+        if(deposito.cantElementos()==0){
+            return Retorno.ok("");
+        }
+        return Retorno.ok(deposito.listarRecursivaAsc(deposito.getLista().getDato()));        
     }
 
     @Override
@@ -391,12 +392,16 @@ public class Sistema implements IObligatorio {
     public Retorno listarBicicletasDeEstacion(String nombreEstacion) {
         Estacion nueva = new Estacion (nombreEstacion);
         Estacion unaEstacion = estaciones.obtenerElemento(nueva).getDato();
-        if(unaEstacion.getBicicletas()!=null){
-            unaEstacion.getBicicletas().listarRecursivaAsc(unaEstacion.getBicicletas().getLista());
-            return Retorno.ok();
+        String ret="";
+        if(unaEstacion.getBicicletas().cantElementos()==0){
+            return Retorno.ok(ret); 
         }
-        return Retorno.error1();
-        //podemos hacer esto por mas que la letra no lo plantee? si
+        for (int i = 0; i < unaEstacion.getBicicletas().cantElementos(); i++) {
+            Bicicleta b = unaEstacion.getBicicletas().obtenerElementoPorPosicion(i).getDato();
+            ret += b.getCodigo() + "|";
+        }
+        ret = ret.substring(0, ret.length() - 1);
+        return Retorno.ok(ret);        
     }
 
     @Override
@@ -524,6 +529,23 @@ public class Sistema implements IObligatorio {
         }
         return deposito.obtenerElemento(b).getDato();
     }
+    
+    public Bicicleta obtenerBiciEnEstacion(String codigo, String nombreEstacion) {
+        
+        Estacion nueva = new Estacion (nombreEstacion);
+        if(!estaciones.existeElemento(nueva)){
+            return null;
+        }
+        Estacion unaEstacion = estaciones.obtenerElemento(nueva).getDato();
+        
+        Bicicleta b = new Bicicleta (codigo);
+        if(!unaEstacion.getBicicletas().existeElemento(b)){
+            return null;
+        }
+        
+        return unaEstacion.getBicicletas().obtenerElemento(b).getDato();
+    }
+    
     
     public Usuario obtenerUsuarioTesting(String cedula) {
         
