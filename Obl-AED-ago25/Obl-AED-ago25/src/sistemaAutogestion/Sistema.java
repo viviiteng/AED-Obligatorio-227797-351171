@@ -486,7 +486,7 @@ public class Sistema implements IObligatorio {
         Estacion e = estaciones.obtenerElemento(new Estacion(nombreEstacion)).getDato();
         for (int i = 0; i < e.getColaUsuariosEspera().getCantNodos(); i++) {
             Usuario u = e.getColaUsuariosEspera().obtenerLista().obtenerElementoPorPosicion(i).getDato();
-            retorno += u.getNombre() + "|";
+            retorno += u.getCedula()+ "|";
         }
         retorno = retorno.substring(0, retorno.length() - 1);
         return Retorno.ok(retorno);
@@ -581,7 +581,7 @@ public class Sistema implements IObligatorio {
         int contador = 0;
         for (int i = 0; i < registroBicicletas.cantElementos(); i++) {
             Bicicleta unaBici = registroBicicletas.obtenerElementoPorPosicion(i).getDato();
-            if(unaBici.getTipo() == tipo && unaBici.isEnAlquiler()){
+            if(unaBici.getTipo().equals(tipo) && unaBici.isEnAlquiler()){
                 contador++;
             }           
         }

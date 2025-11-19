@@ -14,22 +14,13 @@ public class Test3_9UsuariosEnEspera {
 
     @Test
     public void UsuariosEnEsperaOk() {
+        s.registrarEstacion("Estacion1", "Aguada", 5);
+        s.registrarUsuario("50228080", "Agustin");
+        s.registrarUsuario("24555555", "Viviana");
+        s.alquilarBicicleta("50228080", "Estacion1");
+        s.alquilarBicicleta("24555555", "Estacion1");
+        retorno = s.usuariosEnEspera("Estacion1");
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-    }
-
-    @Test
-    public void UsuariosEnEsperaError01() {
-        assertEquals(Retorno.Resultado.ERROR_1, retorno.getResultado());
-    }
-
-    @Test
-    public void UsuariosEnEsperaError02() {
-        assertEquals(Retorno.Resultado.ERROR_2, retorno.getResultado());
-    }
-
-    @Test
-    public void UsuariosEnEsperaError03() {
-        
-        assertEquals(Retorno.Resultado.ERROR_3, retorno.getResultado());
+        assertEquals("50228080|24555555", retorno.getValorString());
     }
 }

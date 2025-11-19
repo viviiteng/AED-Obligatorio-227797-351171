@@ -1,11 +1,11 @@
 package tads;
 
 public class PilaNodos<T extends Comparable<T>> implements IPila<T> {
-    
+
     private Nodo<T> pila;
     private int cantidad;
-    
-    public PilaNodos(){
+
+    public PilaNodos() {
         pila = null;
         cantidad = 0;
     }
@@ -25,7 +25,7 @@ public class PilaNodos<T extends Comparable<T>> implements IPila<T> {
 
     @Override
     public void pop() {
-        if(!esVacia()){
+        if (!esVacia()) {
             Nodo aBorrar = this.pila;
             this.pila = this.pila.getSiguiente();
             aBorrar.setSiguiente(null);
@@ -35,7 +35,7 @@ public class PilaNodos<T extends Comparable<T>> implements IPila<T> {
 
     @Override
     public T top() {
-        if(!esVacia()){
+        if (!esVacia()) {
             return this.pila.getDato();
         }
         return null;
@@ -58,31 +58,31 @@ public class PilaNodos<T extends Comparable<T>> implements IPila<T> {
     public int cantElementos() {
         return cantidad;
     }
-    
+
     // Con fines didácticos
     @Override
     public void mostrar() {
         Nodo aux = this.pila;
-        
-        while(aux != null){
+
+        while (aux != null) {
             System.out.println(aux.getDato());
             aux = aux.getSiguiente();
         }
     }
-    
+
     @Override
     public ListaNodos<T> ConvertirPilaLista(PilaNodos<T> p) {
-        ListaNodos<T> lista = new ListaNodos();
-        if(!p.esVacia()){
-            while(this.cantElementos()>0){
-                lista.agregarInicio(top());
+        ListaNodos<T> ret = new ListaNodos();
+        if (!p.esVacia()) {
+            while (this.cantElementos() > 0) {
+                ret.agregarInicio(this.top());
                 this.pop();
             }
-            for (int i = 0; i < lista.cantElementos(); i++) {
-                T n = lista.obtenerElementoPorPosicion(i).getDato();
-                this.push(n);
+            for (int i = 0; i < ret.cantElementos(); i++) {
+                T dato = ret.obtenerElementoPorPosicion(i).getDato();
+                this.push(dato);
             }
         }
-        return lista;   
+        return ret;
     }
 }
