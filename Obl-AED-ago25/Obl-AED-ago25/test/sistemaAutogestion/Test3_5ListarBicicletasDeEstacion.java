@@ -13,23 +13,58 @@ public class Test3_5ListarBicicletasDeEstacion {
     }
 
     @Test
-    public void ListarBicicletasDeEstacionOk() {
+    public void listarBicicletasDeEstacionVacia() {
+        s.registrarBicicleta("ABC123", "MOUNTAIN");
+        s.registrarEstacion("Estacion2", "Centro", 10);
+        retorno = s.listarBicicletasDeEstacion("Estacion2");
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+        assertEquals("", retorno.getValorString());
     }
 
     @Test
-    public void ListarBicicletasDeEstacionError01() {
-        assertEquals(Retorno.Resultado.ERROR_1, retorno.getResultado());
-    }
-
-    @Test
-    public void ListarBicicletasDeEstacionError02() {
-        assertEquals(Retorno.Resultado.ERROR_2, retorno.getResultado());
-    }
-
-    @Test
-    public void ListarBicicletasDeEstacionError03() {
+    public void listarBicicletasDeEstacionSoloUnaBici() {
+        s.registrarBicicleta("ABC123", "MOUNTAIN");
+        s.registrarEstacion("Estacion2", "Centro", 10);
+        s.asignarBicicletaAEstacion("ABC123", "Estacion2");
         
-        assertEquals(Retorno.Resultado.ERROR_3, retorno.getResultado());
+        retorno = s.listarBicicletasDeEstacion("Estacion2");
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+        assertEquals("ABC123", retorno.getValorString());
+    }
+
+    @Test
+    public void listarBicicletasDeEstacionOrdenado() {
+        
+        s.registrarBicicleta("ABC123", "MOUNTAIN");
+        s.registrarBicicleta("ABC124", "MOUNTAIN");
+        s.registrarBicicleta("ABC125", "MOUNTAIN");
+        
+        s.registrarEstacion("Estacion2", "Centro", 10);
+        
+        s.asignarBicicletaAEstacion("ABC123", "Estacion2");
+        s.asignarBicicletaAEstacion("ABC124", "Estacion2");
+        s.asignarBicicletaAEstacion("ABC125", "Estacion2");
+                
+        retorno = s.listarBicicletasDeEstacion("Estacion2");
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+        assertEquals("ABC123|ABC124|ABC125", retorno.getValorString());
+    }
+
+    @Test
+    public void listarBicisEnDepositoIngresoDesordenado() {
+        s.registrarBicicleta("ABC123", "MOUNTAIN");
+        s.registrarBicicleta("ABC124", "MOUNTAIN");
+        s.registrarBicicleta("ABC125", "MOUNTAIN");
+        
+        s.registrarEstacion("Estacion2", "Centro", 10);
+        
+        s.asignarBicicletaAEstacion("ABC125", "Estacion2");
+        s.asignarBicicletaAEstacion("ABC123", "Estacion2");
+        s.asignarBicicletaAEstacion("ABC124", "Estacion2");
+        
+                
+        retorno = s.listarBicicletasDeEstacion("Estacion2");
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+        assertEquals("ABC123|ABC124|ABC125", retorno.getValorString());
     }
 }
