@@ -207,28 +207,36 @@ public class ListaNodos<T extends Comparable<T>> implements ILista<T> {
     }
     
     @Override
-    public String listarRecursivaDesc(Nodo n){
-        if (n == null) {
+    public String listarRecursivaDesc(T n){
+        Nodo aux = this.obtenerElemento(n).getSiguiente();
+        if (this.obtenerElemento(n) == null) {
             return "";
         }
-        String mensaje = listarRecursivaDesc(n.getSiguiente());
-        if(!mensaje.isEmpty()){            
-            mensaje += "|";            
-        }
-        mensaje += n.getDato().toString();
+        if (aux == null) {
+            return n+"";
+        }         
+        String mensaje = listarRecursivaDesc(this.obtenerElemento(n).getSiguiente().getDato());
+        
+        mensaje += this.obtenerElemento(n).getDato().toString()+ "|";
         return mensaje;
     }
+    
     @Override
-    public String listarRecursivaAsc(Nodo n){
-        if (n == null) {
+    public String listarRecursivaAsc(T n){
+        Nodo aux = this.obtenerElemento(n).getSiguiente();
+        if (this.obtenerElemento(n) == null) {
             return "";
         }
-        String mensaje = n.getDato().toString(); 
-        if(n.getDato()!=null){       
-            mensaje += "|" + listarRecursivaDesc(n.getSiguiente());            
+        if (aux == null) {
+            return n+"";
+        } 
+        String mensaje = this.obtenerElemento(n).getDato().toString(); 
+        if(this.obtenerElemento(n).getSiguiente()!=null){       
+            mensaje += "|" + listarRecursivaAsc(this.obtenerElemento(n).getSiguiente().getDato());            
         }
         return mensaje;
     }
+    
     @Override
     public Nodo<T> obtenerElementoPorPosicion(int pos) {
         Nodo<T> ret = this.lista;

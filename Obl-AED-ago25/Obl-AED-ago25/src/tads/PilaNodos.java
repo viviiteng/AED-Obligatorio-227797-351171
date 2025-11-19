@@ -74,9 +74,8 @@ public class PilaNodos<T extends Comparable<T>> implements IPila<T> {
     public ListaNodos<T> ConvertirPilaLista(PilaNodos<T> p) {
         ListaNodos<T> lista = new ListaNodos();
         if(!p.esVacia()){
-            Nodo<T> aux = this.pila;
-            while(aux!=null){
-                lista.agregarInicio(aux.getDato());
+            while(this.cantElementos()>0){
+                lista.agregarInicio(top());
                 this.pop();
             }
             for (int i = 0; i < lista.cantElementos(); i++) {
