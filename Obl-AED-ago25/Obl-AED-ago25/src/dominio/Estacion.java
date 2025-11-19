@@ -14,7 +14,7 @@ public class Estacion implements Comparable<Estacion>{
     private Cola<Usuario> colaUsuariosDevolucion;
 
     public Estacion(String nombre, String barrio, int capacidad){
-        this.Nombre = nombre;
+        this.setNombre(nombre);
         this.Barrio = barrio;
         this.Capacidad = capacidad;
         this.Bicicletas = new ListaNodos();
@@ -23,7 +23,7 @@ public class Estacion implements Comparable<Estacion>{
     }
     
     public Estacion(String nombre){
-        this.Nombre = nombre;
+        this.setNombre(nombre);
     }
     
     public Cola<Usuario> getColaUsuariosEspera() {
@@ -66,7 +66,7 @@ public class Estacion implements Comparable<Estacion>{
     }
 
     public void setNombre(String nombre) {
-        this.Nombre = nombre;
+        this.Nombre = nombre.toUpperCase();
     }
 
     public int getCapacidad() {
@@ -88,5 +88,11 @@ public class Estacion implements Comparable<Estacion>{
         Estacion e2 = (Estacion)o;
         return this.Nombre.compareTo(e2.getNombre());
     }
+
+    @Override
+    public String toString() {
+        return Nombre;
+    }
+    
    
 }

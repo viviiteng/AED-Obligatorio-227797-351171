@@ -1,5 +1,5 @@
 package tads;
-
+import java.util.Comparator;
 public class ListaNodos<T extends Comparable<T>> implements ILista<T> {
     
     private Nodo<T> lista;
@@ -174,6 +174,36 @@ public class ListaNodos<T extends Comparable<T>> implements ILista<T> {
         list = list.substring(0, list.length() - 1);
        }
        return list;
+    }
+    
+    @Override
+    public ListaNodos<T> ordenar(Comparator<T> comp){
+        ListaNodos<T> nueva = new ListaNodos<>();
+        Nodo<T> actual = this.lista;
+        while (actual != null) {
+            nueva.agregarOrdenadoConComparador(actual.getDato(), comp);
+            actual = actual.getSiguiente();
+        }
+        return nueva;        
+    }
+    
+    @Override
+    public void agregarOrdenadoConComparador(T dato, Comparator<T> comp){
+        
+        if(this.lista == null || comp.compare(dato,this.lista.getDato()) < 0 ){
+            agregarInicio(dato);
+        }else{
+            Nodo<T> aux = this.lista;
+            while(aux.getSiguiente() != null && comp.compare(dato, aux.getSiguiente().getDato()) > 0){
+                aux = aux.getSiguiente();
+            }
+            
+            Nodo nuevo = new Nodo(dato);
+            nuevo.setSiguiente(aux.getSiguiente());
+            aux.setSiguiente(nuevo);
+            
+            this.cantidad++;
+        }
     }
     
     @Override

@@ -13,23 +13,29 @@ public class Test3_10UsuarioMayor {
     }
 
     @Test
-    public void Ok() {
-        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-    }
-
-    @Test
-    public void Error01() {
-        assertEquals(Retorno.Resultado.ERROR_1, retorno.getResultado());
-    }
-
-    @Test
-    public void Error02() {
-        assertEquals(Retorno.Resultado.ERROR_2, retorno.getResultado());
-    }
-
-    @Test
-    public void Error03() {
+    public void usuarioMayorUnUsuario() {
+        s.registrarEstacion("Estacion2", "Centro", 10);
         
-        assertEquals(Retorno.Resultado.ERROR_3, retorno.getResultado());
+        s.registrarUsuario("50228080", "Agustin");
+        s.registrarUsuario("47387057", "Pepe");
+
+        s.registrarBicicleta("ABC123", "URBANA");
+        s.registrarBicicleta("ABD423", "URBANA");
+        s.registrarBicicleta("123ABC", "MOUNTAIN"); 
+        
+        s.asignarBicicletaAEstacion("ABC123", "Estacion2");
+        s.asignarBicicletaAEstacion("ABD423", "Estacion2");
+        s.asignarBicicletaAEstacion("123ABC", "Estacion2");
+        
+        s.alquilarBicicleta("50228080", "Estacion2");
+        s.alquilarBicicleta("50228080", "Estacion2");
+        s.alquilarBicicleta("47387057", "Estacion2");
+        
+        retorno = s.usuarioMayor();
+        assertEquals(Retorno.Resultado.OK, retorno.getResultado());
+        assertEquals("50228080", retorno.getValorString());
+    }
+    public void usuarioMayorMuchosUsuarios() {
+        
     }
 }

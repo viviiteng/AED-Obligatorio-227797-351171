@@ -50,7 +50,7 @@ public class Usuario implements Comparable<Usuario>  {
     @Override
     public int compareTo(Usuario o) {
         Usuario u2 = (Usuario)o;
-        return this.Nombre.compareTo(u2.getNombre());
+        return this.Cedula.compareTo(u2.getCedula());
     }
 
     @Override

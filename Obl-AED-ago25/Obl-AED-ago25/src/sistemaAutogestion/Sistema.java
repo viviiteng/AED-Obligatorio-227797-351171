@@ -1,7 +1,7 @@
 package sistemaAutogestion;
 
 //AgustinFeijoo#351171 y Viviana Teng#227797
-
+import java.util.Comparator;
 import dominio.Estacion;
 import dominio.Usuario;
 import dominio.Bicicleta;
@@ -188,7 +188,7 @@ public class Sistema implements IObligatorio {
         {
             return Retorno.error1();
         }
-        Bicicleta b = new Bicicleta(codigo,null);
+        Bicicleta b = new Bicicleta(codigo);//,null);
         if(!registroBicicletas.existeElemento(b))
         {
             return Retorno.error2();
@@ -197,7 +197,7 @@ public class Sistema implements IObligatorio {
         if(bici.isEnAlquiler() || bici.isEnMantenimiento()){
             return Retorno.error2();
         }
-        Estacion e = new Estacion(nombreEstacion,null,0);
+        Estacion e = new Estacion(nombreEstacion);//,null,0);
         if(!estaciones.existeElemento(e)){
             return Retorno.error3();
         }
@@ -208,9 +208,10 @@ public class Sistema implements IObligatorio {
         if(deposito.existeElemento(bici)){
             est.getBicicletas().agregarFinal(bici);
             deposito.borrarElemento(bici);
+            bici.setUbicacion(est.getNombre());
             return Retorno.ok();
         }else{
-            Estacion e1 = new Estacion(bici.getUbicacion(),null,0);
+            Estacion e1 = new Estacion(bici.getUbicacion());//,null,0);
             est.getBicicletas().agregarFinal(bici);
             estaciones.obtenerElemento(e1).getDato().getBicicletas().borrarElemento(bici);
             return Retorno.ok();
@@ -224,12 +225,12 @@ public class Sistema implements IObligatorio {
         {
             return Retorno.error1();
         }
-        Usuario u = new Usuario(cedula,null);
+        Usuario u = new Usuario(cedula);
         if(!registroUsuarios.existeElemento(u)){
             return Retorno.error2();
         }
-        u = registroUsuarios.obtenerElemento(u).getDato();
-        Estacion e = new Estacion(nombreEstacion,null,0);
+        Usuario uEncontrado = registroUsuarios.obtenerElemento(u).getDato();
+        Estacion e = new Estacion(nombreEstacion);
         if(!estaciones.existeElemento(e)){
             return Retorno.error3();
         }
@@ -238,10 +239,11 @@ public class Sistema implements IObligatorio {
             Bicicleta biciUno = est.getBicicletas().obtenerElementoPorPosicion(0).getDato();
             biciUno.setEnAlquiler(true);
             est.getBicicletas().borrarElemento(biciUno);
-            RegistroAlquiler registro = new RegistroAlquiler(biciUno,u,LocalDate.now(),est);
+            uEncontrado.setUnaBici(biciUno);
+            RegistroAlquiler registro = new RegistroAlquiler(biciUno,uEncontrado,LocalDate.now(),est);
             registroAlquileres.push(registro);
         }else{
-            est.getColaUsuariosEspera().encolar(u);
+            est.getColaUsuariosEspera().encolar(uEncontrado);
         }
         return Retorno.ok();
     }
@@ -252,24 +254,34 @@ public class Sistema implements IObligatorio {
             nombreEstacionDestino == null || nombreEstacionDestino.trim().isEmpty())
         {
             return Retorno.error1();
-        }
+        }          
         
+        Estacion nuevo = new Estacion(nombreEstacionDestino);                
         Usuario unUsuario = new Usuario(cedula);
-        boolean existe = registroUsuarios.existeElemento(unUsuario);
-        Estacion nuevo = new Estacion(nombreEstacionDestino);
-        Estacion unaEstacion = estaciones.obtenerElemento(nuevo).getDato();
         
-        if(!existe && unUsuario.getUnaBici()==null){
+        boolean existe = registroUsuarios.existeElemento(unUsuario);
+        if(!existe) {
             return Retorno.error2();
         }
-        if(!estaciones.existeElemento(unaEstacion)){
+        
+        Usuario Useteado = registroUsuarios.obtenerElemento(unUsuario).getDato();        
+        if (Useteado.getUnaBici().isEnAlquiler()==false) {
+            return Retorno.error2();
+        }
+        
+        if(!estaciones.existeElemento(nuevo)){
           return Retorno.error3();
         }
+        Estacion unaEstacion = estaciones.obtenerElemento(nuevo).getDato();
+        
         if(unaEstacion.getCapacidad() == unaEstacion.getBicicletas().cantElementos()){
-            unaEstacion.getColaUsuariosDevolucion().encolar(unUsuario);           
+            unaEstacion.getColaUsuariosDevolucion().encolar(Useteado);           
         }else{
-            unUsuario.getUnaBici().setEnAlquiler(false);
-            asignarBicicletaAEstacion(unUsuario.getUnaBici().getCodigo(), nombreEstacionDestino);
+            Bicicleta biciDevuelta = Useteado.getUnaBici();
+            biciDevuelta.setEnAlquiler(false);
+            asignarBicicletaAEstacion(biciDevuelta.getCodigo(), nombreEstacionDestino);
+            Useteado.setUnaBici(null);
+           
             if(unaEstacion.getColaUsuariosEspera().getCantNodos()>0){
                 alquilarBicicleta(unaEstacion.getColaUsuariosEspera().getFrente().getDato().getCedula(), nombreEstacionDestino);
             }
@@ -312,7 +324,8 @@ public class Sistema implements IObligatorio {
     
     @Override
     public Retorno listarUsuarios() {
-        return Retorno.ok(registroUsuarios.listar());
+        ListaNodos<Usuario> listaOrdenada = registroUsuarios.ordenar(Comparator.comparing(Usuario::getNombre));
+        return Retorno.ok(listaOrdenada.listar());
     }
 
     @Override
@@ -476,17 +489,19 @@ public class Sistema implements IObligatorio {
 
     @Override
     public Retorno usuarioMayor() {
-         ListaNodos<RegistroAlquiler> RegistrosdePila = registroAlquileres.ConvertirPilaLista(registroAlquileres);
-        int contadorBicis = 0;
+        ListaNodos<RegistroAlquiler> RegistrosdePila = registroAlquileres.ConvertirPilaLista(registroAlquileres);
+        
         int cedulaMostrar=0;
         int max = 0;
         for (int i = 0; i < registroUsuarios.cantElementos(); i++) {            
             String cedula = registroUsuarios.obtenerElementoPorPosicion(i).getDato().getCedula();
+                int contadorBicis = 0;
                 for (int j = 0; j < RegistrosdePila.cantElementos(); j++) {
-                    Usuario unUsuario = RegistrosdePila.obtenerElementoPorPosicion(j).getDato().getUnUsuario();                    
-                    if(unUsuario.getCedula().equals(cedula) && unUsuario.getUnaBici().isEnAlquiler()){
+                    RegistroAlquiler r = RegistrosdePila.obtenerElementoPorPosicion(j).getDato();
+
+                    if (r.getUnUsuario().getCedula().equals(cedula)) {
                         contadorBicis++;
-                    }                    
+                    }                   
                 }
                 if(contadorBicis>max){
                     max = contadorBicis;
@@ -498,7 +513,7 @@ public class Sistema implements IObligatorio {
                     }                    
                 }
         }
-        return Retorno.ok(cedulaMostrar);
+        return Retorno.ok("" + cedulaMostrar);
     }
     
     public Bicicleta obtenerBiciEnDeposito(String codigo) {
@@ -510,6 +525,14 @@ public class Sistema implements IObligatorio {
         return deposito.obtenerElemento(b).getDato();
     }
     
+    public Usuario obtenerUsuarioTesting(String cedula) {
+        
+        Usuario b = new Usuario (cedula);
+        if(!registroUsuarios.existeElemento(b)){
+            return null;
+        }
+        return registroUsuarios.obtenerElemento(b).getDato();
+    }
     public Bicicleta obtenerBiciEnBicicletas(String codigo) {
         
         Bicicleta b = new Bicicleta (codigo);
@@ -521,6 +544,15 @@ public class Sistema implements IObligatorio {
     
     public ListaNodos<Estacion> obtenerEstacionesTest() {
         return estaciones;
+    }
+    
+    public Estacion obtenerEstacionTest(String nombre) {
+        
+        Estacion b = new Estacion (nombre);
+        if(!estaciones.existeElemento(b)){
+            return null;
+        }
+        return estaciones.obtenerElemento(b).getDato();
     }
     
     public int obtenerCantBicisPorAlquilerSegunTipo(String tipo) {        

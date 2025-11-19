@@ -18,7 +18,7 @@ public class Test2_4RegistrarBicicleta {
     public void registrarBicicletaOk() {
         retorno = s.registrarBicicleta("ABC123", "URBANA");
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
-        retorno = s.registrarBicicleta("ABC124", "Mountain");
+        retorno = s.registrarBicicleta("ABC124", "MOUNTAIN");
         assertEquals(Retorno.Resultado.OK, retorno.getResultado());
     }
 

@@ -1,5 +1,5 @@
 package tads;
-
+import java.util.Comparator;
 public interface ILista<T extends Comparable<T>> {
     
     public boolean esVacia();
@@ -20,5 +20,6 @@ public interface ILista<T extends Comparable<T>> {
     public String listarRecursivaDesc(Nodo n);
     public String listarRecursivaAsc(Nodo n);
     public Nodo<T> obtenerElementoPorPosicion(int pos);
-    
+    public void agregarOrdenadoConComparador(T dato, Comparator<T> comp);
+    public ListaNodos<T> ordenar(Comparator<T> comp);
 }
